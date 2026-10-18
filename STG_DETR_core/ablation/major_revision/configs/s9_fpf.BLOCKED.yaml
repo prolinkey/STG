@@ -1,0 +1,6 @@
+major_revision:
+  id: S9
+  part: STGF
+  setting: FPF reproduction
+  runnable: false
+  reason: No official or independently verifiable FPF source/complete implementation details were found.

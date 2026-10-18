@@ -1,0 +1,203 @@
+nc: 4
+scales:
+  l:
+  - 1.0
+  - 1.0
+  - 1024
+major_revision:
+  id: S0
+  part: STGF
+  setting: No STGF
+  imgsz: 640
+  epochs: 200
+  pretrained: false
+  rpsb_transition_rule: standard_stage_entry; modify shortcut stride1 same-channel blocks only
+backbone:
+- - -1
+  - 1
+  - ConvNormLayer
+  - - 32
+    - 3
+    - 2
+    - null
+    - false
+    - relu
+- - -1
+  - 1
+  - ConvNormLayer
+  - - 32
+    - 3
+    - 1
+    - null
+    - false
+    - relu
+- - -1
+  - 1
+  - ConvNormLayer
+  - - 64
+    - 3
+    - 1
+    - null
+    - false
+    - relu
+- - -1
+  - 1
+  - nn.MaxPool2d
+  - - 3
+    - 2
+    - 1
+- - -1
+  - 1
+  - Blocks
+  - - 64
+    - BasicBlock_R3
+    - 2
+    - 2
+    - relu
+- - -1
+  - 1
+  - Blocks
+  - - 128
+    - BasicBlock_R3
+    - 2
+    - 3
+    - relu
+- - -1
+  - 1
+  - Blocks
+  - - 256
+    - BasicBlock_R3
+    - 2
+    - 4
+    - relu
+- - -1
+  - 1
+  - Blocks
+  - - 512
+    - BasicBlock_R3
+    - 2
+    - 5
+    - relu
+head:
+- - 7
+  - 1
+  - Conv
+  - - 256
+    - 1
+    - 1
+    - null
+    - 1
+    - 1
+    - false
+- - -1
+  - 1
+  - AIFI
+  - - 1024
+    - 8
+- - -1
+  - 1
+  - Conv
+  - - 256
+    - 1
+    - 1
+- - -1
+  - 1
+  - nn.Upsample
+  - - null
+    - 2
+    - nearest
+- - 6
+  - 1
+  - Conv
+  - - 256
+    - 1
+    - 1
+    - null
+    - 1
+    - 1
+    - false
+- - - -2
+    - -1
+  - 1
+  - Concat
+  - - 1
+- - -1
+  - 3
+  - RepC3
+  - - 256
+    - 0.5
+- - -1
+  - 1
+  - Conv
+  - - 256
+    - 1
+    - 1
+- - -1
+  - 1
+  - nn.Upsample
+  - - null
+    - 2
+    - nearest
+- - 5
+  - 1
+  - Conv
+  - - 256
+    - 1
+    - 1
+    - null
+    - 1
+    - 1
+    - false
+- - - -2
+    - -1
+  - 1
+  - Concat
+  - - 1
+- - -1
+  - 3
+  - RepC3
+  - - 256
+    - 0.5
+- - -1
+  - 1
+  - Conv
+  - - 256
+    - 3
+    - 2
+- - - -1
+    - 15
+  - 1
+  - Concat
+  - - 1
+- - -1
+  - 3
+  - RepC3
+  - - 256
+    - 0.5
+- - -1
+  - 1
+  - Conv
+  - - 256
+    - 3
+    - 2
+- - - -1
+    - 10
+  - 1
+  - Concat
+  - - 1
+- - -1
+  - 3
+  - RepC3
+  - - 256
+    - 0.5
+- - - 19
+    - 22
+    - 25
+  - 1
+  - RTDETRDecoder
+  - - nc
+    - 256
+    - 300
+    - 4
+    - 8
+    - 3
